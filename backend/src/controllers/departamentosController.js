@@ -29,8 +29,8 @@ exports.criar = async (req, res) => {
   try {
     const { nome, centro_custo } = req.body;
 
-    const [result] = db.query(
-      "INSERTO INTO departamento (nome, centro_custo) VALUES (?,?)",
+    const [result] = await db.query(
+      "INSERT INTO departamento (nome, centro_custo) VALUES (?,?)",
       [nome, centro_custo],
     );
 

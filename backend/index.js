@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true })); // lê form data
 app.use("/api/funcionarios", require("./src/routes/funcionarios"));
 app.use("/api/cargos", require("./src/routes/cargos"));
 app.use("/api/departamentos", require("./src/routes/departamentos"));
-app.use("/api/folhas", require("./src/routes/folhas"));
+app.use("/api/folhas", require("./src/routes/folhasDePagamento"));
 app.use("/api/lancamentos", require("./src/routes/lancamentos"));
 
 // Iniciar servidor

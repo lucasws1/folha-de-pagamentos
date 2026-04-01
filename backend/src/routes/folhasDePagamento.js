@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const ctrl = require("../controllers/lancamentosController");
+const ctrl = require("../controllers/folhasDePagamentoController");
 
 router.get("/", ctrl.listar); // GET /api/folhas
 router.get("/:id", ctrl.buscarPorId); // GET /api/folhas/:id
