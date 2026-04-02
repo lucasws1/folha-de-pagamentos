@@ -77,13 +77,15 @@ export default function FolhasDePagamento() {
     setErro("");
     try {
       if (editandoId) {
-        await api.put(`/folhas/${id}`, form);
+        await api.put(`/folhas/${editandoId}`, form);
       } else {
         await api.post(`/folhas`, form);
       }
       await carregarFolhas();
       fecharModal();
     } catch (err) {
+      console.log(err);
+
       setErro(err.response?.data?.erro || "Erro ao salvar.");
     }
   }

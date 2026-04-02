@@ -49,6 +49,7 @@ export default function Funcionarios() {
     abrirModalEditar,
     fecharModal,
     handleChange,
+    handleSelect,
   } = useModal(FORM_INICIAL);
 
   useEffect(() => {
@@ -64,10 +65,6 @@ export default function Funcionarios() {
     setFuncionarios(f.data);
     setCargos(c.data);
     setDepartamentos(d.data);
-  }
-
-  function handleSelect(field, value) {
-    setForm({ ...form, [field]: value });
   }
 
   async function handleSubmit(e) {
