@@ -110,6 +110,145 @@ export default function FolhasDePagamento() {
         <h2 className="text-2xl font-semibold">Folhas de Pagamento</h2>
         <Button onClick={abrirModalNovo}>+ Nova Folha</Button>
       </div>
+
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Período</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Ações</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {folhas.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={3}
+                  className="text-center text-muted-foreground py-8"
+                >
+                  Nenhuma folha cadastrada
+                </TableCell>
+              </TableRow>
+            ) : (
+              folhas.map((f) => (
+                <TableRow key={f.id}>
+                  <TableCell>
+                    {MESES[f.mes - 1]} / {f.ano}
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`font-medium capitalize ${statusVariant[f.status]}`}
+                    >
+                      {f.status}
+                    </span>
+                  </TableCell>
+                  <TableCell className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        abrirModalEditar({
+                          id: f.id,
+                          mes: String(f.mes),
+                          ano: String(f.ano),
+                          status: f.status,
+                        })
+                      }
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleRemover(f.id)}
+                    >
+                      Remover
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      <Dialog open={modalAberto} onOpenChange={fecharModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              {editandoId ? "Editar folha" : "Nova folha"}
+            </DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-2">
+            <div className="flex flex-col gap-1">
+              <Label>Mês</Label>
+              <Select
+                value={form.mes}
+                onValueChange={(v) => handleSelect("mes", v)}
+                required
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {MESES.map((nome, i) => (
+                    <SelectItem key={i + 1} value={String(i + 1)}>
+                      {nome}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <Label>Ano</Label>
+              <Select
+                value={form.ano}
+                onValueChange={(v) => handleSelect("ano", v)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ANOS.map((ano) => (
+                    <SelectItem key={ano} value={ano}>
+                      {ano}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <Label>Status</Label>
+              <Select
+                value={form.status}
+                onValueChange={(v) => handleSelect("status", v)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="aberta">Aberta</SelectItem>
+                  <SelectItem value="fechada">Fechada</SelectItem>
+                  <SelectItem value="paga">Paga</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {erro && <p className="text-sm text-destructive">{erro}</p>}
+
+            <div className="flex justify-end gap-2 mt-2">
+              <Button type="button" variant="outline" onClick={fecharModal}>
+                Cancelar
+              </Button>
+              <Button type="submit">{editandoId ? "Salvar" : "Criar"}</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
